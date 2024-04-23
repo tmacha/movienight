@@ -1,0 +1,2 @@
+# GET http://localhost:3001/
+GET http://www.omdbapi.com/?i=tt3896198&apikey=c3e2d84b/movies
