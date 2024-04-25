@@ -1,0 +1,7 @@
+# GET http://localhost:3001/
+#GET http://www.omdbapi.com/?t=Matrix&apikey=c3e2d84b
+
+# GET http://localhost:3001/movies/search?q=Matrix
+
+
+GET http://localhost:3000/movies/
