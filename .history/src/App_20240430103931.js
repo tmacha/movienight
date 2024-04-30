@@ -9,11 +9,8 @@ function App() {
     event.preventDefault();
     try {
       const response = await fetch(`/movies/search?q=${searchQuery}`);
-      if (!response.ok) {
-        // If the response is not ok, throw an error with the status text
-        throw new Error(response.statusText);
-      }
       const data = await response.json();
+      console.log(data);
       setMovies(data);
       setError(null);
     } catch (error) {

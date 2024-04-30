@@ -17,7 +17,11 @@ app.get("/movies", async (req, res) => {
     });
     const data = response.data;
     if (data.Response === "True") {
-      res.json(data.Search);
+      const searchResults = Array.isArray(data.Search)
+        ? data.Search
+        : [data.Search];
+      console.log(searchResults);
+      res.json(searchResults);
     } else {
       res.status(404).json({ message: "No movies found" });
     }
@@ -38,10 +42,7 @@ app.get("/movies/search", async (req, res) => {
     });
     const data = response.data;
     if (data.Response === "True") {
-      const searchResults = Array.isArray(data.Search)
-        ? data.Search
-        : [data.Search];
-      res.json(searchResults);
+      res.json(data.Search);
     } else {
       res.status(404).json({ message: "No movies found" });
     }

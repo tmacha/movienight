@@ -28,8 +28,10 @@ app.get("/movies", async (req, res) => {
 });
 
 app.get("/movies/search", async (req, res) => {
+  console.log("TEST1");
   const query = req.query.q;
   try {
+    console.log("TEST2");
     const response = await axios.get(omdbApiUrl, {
       params: {
         apikey: omdbApiKey,
@@ -37,7 +39,9 @@ app.get("/movies/search", async (req, res) => {
       },
     });
     const data = response.data;
+    console.log("TEST3");
     if (data.Response === "True") {
+      console.log("TEST4");
       const searchResults = Array.isArray(data.Search)
         ? data.Search
         : [data.Search];

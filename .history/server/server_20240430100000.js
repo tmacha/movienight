@@ -42,6 +42,7 @@ app.get("/movies/search", async (req, res) => {
         ? data.Search
         : [data.Search];
       res.json(searchResults);
+      console.log(searchResults);
     } else {
       res.status(404).json({ message: "No movies found" });
     }

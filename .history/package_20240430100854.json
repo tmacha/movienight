@@ -18,11 +18,11 @@
   },
   "scripts": {
     "start": "concurrently \"yarn server\" \"yarn client\"",
-    "client": "react-scripts start & open http://localhost:3000 -a 'Google Chrome'",
+    "client": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon -L  --exec node ./server/server.js"
+    "server": "nodemon -L node ./server/server.js"
   },
   "eslintConfig": {
     "extends": [

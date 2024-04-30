@@ -38,9 +38,7 @@ app.get("/movies/search", async (req, res) => {
     });
     const data = response.data;
     if (data.Response === "True") {
-      const searchResults = Array.isArray(data.Search)
-        ? data.Search
-        : [data.Search];
+      const searchResults = Array.isArray(data) ? data : [data];
       res.json(searchResults);
     } else {
       res.status(404).json({ message: "No movies found" });
