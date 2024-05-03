@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [movies, setMovies] = useState([]);
-  const [error, setError] = useState(null);
+ const [searchQuery, setSearchQuery] = useState("");
+ const [movies, setMovies] = useState([]);
+ const [error, setError] = useState(null);
 
-  const handleSearch = async (event) => {
+ const handleSearch = async (event) => {
     event.preventDefault();
     try {
       const response = await fetch(`/movies/search?q=${searchQuery}`);
@@ -19,21 +19,18 @@ function App() {
     } catch (error) {
       setError(error.message);
     }
-  };
+ };
 
-  return (
+ return (
     <div>
-      <form onSubmit={handleSearch} className="search-bar">
+      <form onSubmit={handleSearch}>
         <input
           type="search"
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
           placeholder="Search for a movie..."
-          className="search-input"
         />
-        <button type="submit" className="search-button">
-          Search
-        </button>
+        <button type="submit">Search</button>
       </form>
       {error ? (
         <p style={{ color: "red" }}>{error}</p>
@@ -65,15 +62,13 @@ function App() {
             return (
               <div key={index} className="movie-item">
                 <img
-                  src={movie.Poster}
-                  alt={`${movie.Title} Poster`}
-                  className="movie-poster"
+                 src={movie.Poster}
+                 alt={`${movie.Title} Poster`}
+                 className="movie-poster"
                 />
                 <div className="movie-overlay">
-                  <div className="movie-title">
-                    {movie.Title} ({movie.Year})
-                  </div>
-                  <div className="movie-details">
+                 <div className="movie-title">{movie.Title} ({movie.Year})</div>
+                 <div className="movie-details">
                     <div>{formattedRuntime}</div>
                     <div>
                       <img
@@ -94,7 +89,7 @@ function App() {
                     <div>
                       <span className="emoji">$</span> {formattedBoxOffice}
                     </div>
-                  </div>
+                 </div>
                 </div>
               </div>
             );
@@ -102,7 +97,7 @@ function App() {
         </div>
       )}
     </div>
-  );
+ );
 }
 
 export default App;

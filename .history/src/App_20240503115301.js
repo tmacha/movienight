@@ -23,56 +23,36 @@ function App() {
 
   return (
     <div>
-      <form onSubmit={handleSearch} className="search-bar">
+      <form onSubmit={handleSearch}>
         <input
           type="search"
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
           placeholder="Search for a movie..."
-          className="search-input"
         />
-        <button type="submit" className="search-button">
-          Search
-        </button>
+        <button type="submit">Search</button>
       </form>
       {error ? (
         <p style={{ color: "red" }}>{error}</p>
       ) : (
-        <div className="movie-grid">
+        <ul className="movie-list">
           {movies.map((movie, index) => {
-            // Check if BoxOffice is defined before attempting to format it
-            const boxOfficeValue = movie.BoxOffice
-              ? parseFloat(movie.BoxOffice.replace(/[\$,]/g, ""))
-              : 0;
-            let formattedBoxOffice;
-
-            // Determine the order of magnitude and format accordingly
-            if (boxOfficeValue >= 1000000) {
-              // Millions
-              formattedBoxOffice = (boxOfficeValue / 1000000).toFixed(1) + "M";
-            } else if (boxOfficeValue >= 1000) {
-              // Thousands
-              formattedBoxOffice = (boxOfficeValue / 1000).toFixed(1) + "T";
-            } else {
-              formattedBoxOffice = boxOfficeValue.toFixed(1); // Less than a thousand, no abbreviation
-            }
-
-            // Check if Runtime is defined before attempting to format it
-            const formattedRuntime = movie.Runtime
-              ? movie.Runtime.replace(" min", "m")
-              : "N/A";
+            // Your existing logic for formatting box office and runtime
+            // ...
 
             return (
-              <div key={index} className="movie-item">
-                <img
-                  src={movie.Poster}
-                  alt={`${movie.Title} Poster`}
-                  className="movie-poster"
-                />
-                <div className="movie-overlay">
-                  <div className="movie-title">
-                    {movie.Title} ({movie.Year})
-                  </div>
+              <li key={index} className="movie-item">
+                <div className="movie-title">
+                  {movie.Title} ({movie.Year})
+                </div>
+                <div className="movie-info">
+                  {movie.Poster !== "N/A" && (
+                    <img
+                      src={movie.Poster}
+                      alt={`${movie.Title} Poster`}
+                      className="movie-poster"
+                    />
+                  )}
                   <div className="movie-details">
                     <div>{formattedRuntime}</div>
                     <div>
@@ -96,10 +76,10 @@ function App() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
     </div>
   );

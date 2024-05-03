@@ -12,10 +12,11 @@ app.get("/movies/search", async (req, res) => {
   let allResults = [];
   let page = 1;
   let hasMore = true;
-  let limit = true;
+  let limit = false;
 
   while (hasMore && limit) {
-    limit = page === 1 ? (limit = false) : (limit = true);
+
+page =2 ?? limit = false : limit = true;
     try {
       const response = await axios.get(omdbApiUrl, {
         params: {

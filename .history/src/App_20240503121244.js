@@ -23,22 +23,19 @@ function App() {
 
   return (
     <div>
-      <form onSubmit={handleSearch} className="search-bar">
+      <form onSubmit={handleSearch}>
         <input
           type="search"
           value={searchQuery}
           onChange={(event) => setSearchQuery(event.target.value)}
           placeholder="Search for a movie..."
-          className="search-input"
         />
-        <button type="submit" className="search-button">
-          Search
-        </button>
+        <button type="submit">Search</button>
       </form>
       {error ? (
         <p style={{ color: "red" }}>{error}</p>
       ) : (
-        <div className="movie-grid">
+        <ul className="movie-list">
           {movies.map((movie, index) => {
             // Check if BoxOffice is defined before attempting to format it
             const boxOfficeValue = movie.BoxOffice
@@ -63,43 +60,47 @@ function App() {
               : "N/A";
 
             return (
-              <div key={index} className="movie-item">
-                <img
-                  src={movie.Poster}
-                  alt={`${movie.Title} Poster`}
-                  className="movie-poster"
-                />
-                <div className="movie-overlay">
-                  <div className="movie-title">
-                    {movie.Title} ({movie.Year})
-                  </div>
-                  <div className="movie-details">
-                    <div>{formattedRuntime}</div>
-                    <div>
+              <li key={index} className="movie-item">
+                <div className="movie-title">
+                  {movie.Title} ({movie.Year})
+                </div>
+                <div className="movie-content">
+                  <div className="movie-info">
+                    {movie.Poster !== "N/A" && (
                       <img
-                        src={`${process.env.PUBLIC_URL}/images/imdb-logo.png`}
-                        alt="IMDb"
-                        className="rating-logo"
-                      />{" "}
-                      {movie.imdbRating}
-                    </div>
-                    <div>
-                      <img
-                        src={`${process.env.PUBLIC_URL}/images/metacritic-logo.png`}
-                        alt="Metacritic"
-                        className="rating-logo"
-                      />{" "}
-                      {movie.Metascore}
-                    </div>
-                    <div>
-                      <span className="emoji">$</span> {formattedBoxOffice}
+                        src={movie.Poster}
+                        alt={`${movie.Title} Poster`}
+                        className="movie-poster"
+                      />
+                    )}
+                    <div className="movie-details">
+                      <div>{formattedRuntime}</div>
+                      <div>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/imdb-logo.png`}
+                          alt="IMDb"
+                          className="rating-logo"
+                        />{" "}
+                        {movie.imdbRating}
+                      </div>
+                      <div>
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/metacritic-logo.png`}
+                          alt="Metacritic"
+                          className="rating-logo"
+                        />{" "}
+                        {movie.Metascore}
+                      </div>
+                      <div>
+                        <span className="emoji">$</span> {formattedBoxOffice}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
     </div>
   );

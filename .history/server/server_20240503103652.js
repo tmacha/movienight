@@ -12,15 +12,12 @@ app.get("/movies/search", async (req, res) => {
   let allResults = [];
   let page = 1;
   let hasMore = true;
-  let limit = true;
-
-  while (hasMore && limit) {
-    limit = page === 1 ? (limit = false) : (limit = true);
+  while (hasMore) {
     try {
       const response = await axios.get(omdbApiUrl, {
         params: {
           apikey: omdbApiKey,
-          s: query, // search for movies by title
+          t: query, // search for movies by title
           page: page, // specify the page number
         },
       });
@@ -29,19 +26,7 @@ app.get("/movies/search", async (req, res) => {
         const searchResults = Array.isArray(data.Search)
           ? data.Search
           : [data.Search];
-        // Fetch full details for each movie
-        const detailedResults = await Promise.all(
-          searchResults.map(async (movie) => {
-            const detailResponse = await axios.get(omdbApiUrl, {
-              params: {
-                apikey: omdbApiKey,
-                i: movie.imdbID, // fetch full details using IMDb ID
-              },
-            });
-            return detailResponse.data;
-          })
-        );
-        allResults = allResults.concat(detailedResults);
+        allResults = allResults.concat(searchResults);
         // Check if there are more pages
         hasMore = data.totalResults > page * 10;
         page++;
@@ -57,7 +42,6 @@ app.get("/movies/search", async (req, res) => {
 
   res.json(allResults);
 });
-
 app.get("/movies/:id", async (req, res) => {
   const id = req.params.id;
   try {

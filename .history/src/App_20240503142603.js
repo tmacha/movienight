@@ -22,19 +22,19 @@ function App() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSearch} className="search-bar">
-        <input
-          type="search"
-          value={searchQuery}
-          onChange={(event) => setSearchQuery(event.target.value)}
-          placeholder="Search for a movie..."
-          className="search-input"
-        />
-        <button type="submit" className="search-button">
-          Search
-        </button>
-      </form>
+    <form onSubmit={handleSearch} className="search-bar">
+ <div className="search-input-wrapper">
+    <input
+      type="search"
+      value={searchQuery}
+      onChange={(event) => setSearchQuery(event.target.value)}
+      placeholder="Search for a movie..."
+      className="search-input"
+    />
+    <i className="search-icon fas fa-search"></i>
+ </div>
+ <button type="submit" className="search-button">Search</button>
+</form>
       {error ? (
         <p style={{ color: "red" }}>{error}</p>
       ) : (

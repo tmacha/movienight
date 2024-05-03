@@ -22,7 +22,6 @@ function App() {
   };
 
   return (
-    <div>
       <form onSubmit={handleSearch} className="search-bar">
         <input
           type="search"
