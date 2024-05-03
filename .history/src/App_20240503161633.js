@@ -11,7 +11,7 @@ function App() {
     try {
       const apiUrl =
         process.env.NODE_ENV === "production"
-          ? "https://tmacha.github.io/movienight/movies/search"
+          ? "https://your-server-url.com/movies/search"
           : "/movies/search";
       const response = await fetch(`${apiUrl}?q=${searchQuery}`);
       if (!response.ok) {

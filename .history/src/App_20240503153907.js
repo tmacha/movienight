@@ -9,11 +9,7 @@ function App() {
   const handleSearch = async (event) => {
     event.preventDefault();
     try {
-      const apiUrl =
-        process.env.NODE_ENV === "production"
-          ? "https://tmacha.github.io/movienight/movies/search"
-          : "/movies/search";
-      const response = await fetch(`${apiUrl}?q=${searchQuery}`);
+      const response = await fetch(`/movies/search?q=${searchQuery}`);
       if (!response.ok) {
         throw new Error(response.statusText);
       }

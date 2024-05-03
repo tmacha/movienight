@@ -1,6 +1,5 @@
 {
   "name": "movienight",
-  "homepage": "https://tmacha.github.io/movienight",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3001",
@@ -11,7 +10,6 @@
     "axios": "^1.6.8",
     "concurrently": "^8.2.2",
     "express": "^4.19.2",
-    "gh-pages": "^6.1.1",
     "mongoose": "^8.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -24,9 +22,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon -L  --exec node ./server/server.js",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build && git push"
+    "server": "nodemon -L  --exec node ./server/server.js"
   },
   "eslintConfig": {
     "extends": [
