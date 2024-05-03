@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/movienight/static/css/main.f79c5dce.css",
-    "main.js": "/movienight/static/js/main.e693f9dc.js",
+    "main.js": "/movienight/static/js/main.89c72992.js",
     "static/js/453.27f3c707.chunk.js": "/movienight/static/js/453.27f3c707.chunk.js",
     "index.html": "/movienight/index.html",
     "main.f79c5dce.css.map": "/movienight/static/css/main.f79c5dce.css.map",
-    "main.e693f9dc.js.map": "/movienight/static/js/main.e693f9dc.js.map",
+    "main.89c72992.js.map": "/movienight/static/js/main.89c72992.js.map",
     "453.27f3c707.chunk.js.map": "/movienight/static/js/453.27f3c707.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f79c5dce.css",
-    "static/js/main.e693f9dc.js"
+    "static/js/main.89c72992.js"
   ]
 }
