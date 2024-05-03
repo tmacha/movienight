@@ -8,4 +8,5 @@
 
 # GET http://localhost:3001/movies/
 
-GET https://tmacha.github.io/movies/search?q=matrix
+# GET https://tmacha.github.io/movies/search?q=matrix
+GET https://movienight-seven.vercel.app/movies/search?q=matrix
