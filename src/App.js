@@ -14,7 +14,7 @@ function App() {
           ? "https://movienight-seven.vercel.app/movies/search"
           : "/movies/search";
       console.log(process.env.NODE_ENV);
-      const response = await fetch(`${apiUrl}?q=${searchQuery}`);
+      const response = await fetch(`${apiUrl}?s=${searchQuery}`);
       if (!response.ok) {
         throw new Error(response.statusText);
       }
