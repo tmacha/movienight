@@ -11,7 +11,7 @@ function App() {
     try {
       const apiUrl =
         process.env.NODE_ENV === "production"
-          ? "/api/movies/search"
+          ? "https://movienight-seven.vercel.app/api/movies/"
           : "/movies/search";
       console.log(process.env.NODE_ENV);
       const response = await fetch(`${apiUrl}?q=${searchQuery}`);
