@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/movies/search",
+      "dest": "/api/movies/search"
+    }
+  ],
+  "trailingSlash": false
+}
