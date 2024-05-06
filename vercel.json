@@ -1,6 +1,16 @@
 {
+  "version": 2,
+  "routes": [
+    {
+      "src": "/movies/search",
+      "dest": "/api/movies/search"
+    }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/" }
-  ]
+  ],
+  "static": {
+    "disabled": true
+  }
 }

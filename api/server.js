@@ -1,3 +1,5 @@
+console.log("Serverless function executed!");
+
 const express = require("express");
 const app = express();
 const axios = require("axios");
