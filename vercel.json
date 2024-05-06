@@ -6,9 +6,5 @@
       "dest": "/api/movies/search"
     }
   ],
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/" }
-  ],
   "trailingSlash": false
 }
