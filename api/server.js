@@ -1,104 +1,77 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
-const axios = require("axios");
-const PORT = process.env.PORT || 3001;
-const omdbApiKey = "c3e2d84b";
-const omdbApiUrl = "http://www.omdbapi.com";
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const session = require("express-session");
+const crypto = require("crypto");
+const { searchMovies, getMovieById, getAllMovies } = require("./endpoints");
+const oauth = require("../oauth.json");
+const PORT = 3001;
+const path = require("path");
+
+function generateSessionSecret() {
+  return crypto.randomBytes(64).toString("hex");
+}
+const sessionSecret = generateSessionSecret();
+
+const app = express();
 
 app.use(express.json()); // Add this line to parse JSON requests
 app.use(cors());
+app.use(
+  session({
+    secret: `${sessionSecret}`, // Replace with a secure, random string
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.get("/movies/search", async (req, res) => {
-  const query = req.query.q;
-  let allResults = [];
-  let page = 1;
-  let hasMore = true;
-  let limit = true;
+app.use(express.static(path.join(__dirname, "../build")));
 
-  while (hasMore && limit) {
-    limit = page === 1 ? (limit = false) : (limit = true);
-    try {
-      const response = await axios.get(omdbApiUrl, {
-        params: {
-          apikey: omdbApiKey,
-          s: query, // search for movies by title
-          page: page, // specify the page number
-        },
-      });
-      const data = response.data;
-      if (data.Response === "True") {
-        const searchResults = Array.isArray(data.Search)
-          ? data.Search
-          : [data.Search];
-        // Fetch full details for each movie
-        const detailedResults = await Promise.all(
-          searchResults.map(async (movie) => {
-            const detailResponse = await axios.get(omdbApiUrl, {
-              params: {
-                apikey: omdbApiKey,
-                i: movie.imdbID, // fetch full details using IMDb ID
-              },
-            });
-            return detailResponse.data;
-          })
-        );
-        allResults = allResults.concat(detailedResults);
-        // Check if there are more pages
-        hasMore = data.totalResults > page * 10;
-        page++;
-      } else {
-        hasMore = false;
-      }
-    } catch (err) {
-      console.error("Error fetching movies:", err.message);
-      res.status(500).json({ message: err.message });
-      hasMore = false;
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: `${oauth.web.client_id}`, // Replace with your Google Client ID
+      clientSecret: `${oauth.web.client_secret}`, // Replace with your Google Client Secret
+      callbackURL: "http://localhost:3001/auth/google/callback",
+    },
+    function (accessToken, refreshToken, profile, cb) {
+      // Here, you would typically find or create a user in your database
+      // For simplicity, we'll just return the profile
+      return cb(null, profile);
     }
-  }
+  )
+);
 
-  res.json(allResults);
+passport.serializeUser(function (user, cb) {
+  cb(null, user);
 });
 
-app.get("/movies/:id", async (req, res) => {
-  const id = req.params.id;
-  try {
-    const response = await axios.get(omdbApiUrl, {
-      params: {
-        apikey: omdbApiKey,
-        i: id, // get movie details by ID
-      },
-    });
-    const data = response.data;
-    if (data.Response === "True") {
-      res.json(data);
-    } else {
-      res.status(404).json({ message: "Movie not found" });
-    }
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+passport.deserializeUser(function (obj, cb) {
+  cb(null, obj);
 });
 
-app.get("/movies", async (req, res) => {
-  try {
-    const response = await axios.get(omdbApiUrl, {
-      params: {
-        apikey: omdbApiKey,
-        s: "movies", // search for movies
-      },
-    });
-    const data = response.data;
-    if (data.Response === "True") {
-      res.json(data.Search);
-    } else {
-      res.status(404).json({ message: "No movies found" });
-    }
-  } catch (err) {
-    console.error("Error fetching movies:", err.message);
-    res.status(500).json({ message: err.message });
+// Route to initiate Google OAuth flow
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile"] })
+);
+
+// Route to handle Google OAuth callback
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/");
   }
-});
+);
+
+app.get("/movies/search", searchMovies);
+app.get("/movies/:id", getMovieById);
+app.get("/movies", getAllMovies);
 
 if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {
