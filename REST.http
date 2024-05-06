@@ -10,4 +10,4 @@
 
 
 # GET https://tmacha.github.io/movies/search?q=matrix
-GET https://movienight-seven.vercel.app/api/movies/search?q=matrix
+GET https://server-five-sand.vercel.app/movies/search?q=matrix
