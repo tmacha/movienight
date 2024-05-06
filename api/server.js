@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const axios = require("axios");
 const PORT = process.env.PORT || 3001;
 const omdbApiKey = "c3e2d84b";
 const omdbApiUrl = "http://www.omdbapi.com";
 
 app.use(express.json()); // Add this line to parse JSON requests
+app.use(cors());
 
 app.get("/movies/search", async (req, res) => {
   const query = req.query.q;
