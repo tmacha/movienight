@@ -32,8 +32,8 @@ app.use(express.static(path.join(__dirname, "../build")));
 passport.use(
   new GoogleStrategy(
     {
-      clientID: `${oauth.web.client_id}`, // Replace with your Google Client ID
-      clientSecret: `${oauth.web.client_secret}`, // Replace with your Google Client Secret
+      clientID: `${process.env.CLIENT_ID}`, // Replace with your Google Client ID
+      clientSecret: `${process.env.CLIENT_SECRET}`, // Replace with your Google Client Secret
       callbackURL: "http://localhost:3001/auth/google/callback",
     },
     function (accessToken, refreshToken, profile, cb) {
