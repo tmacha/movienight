@@ -1,9 +1,9 @@
 {
-  "routes": [
+  "version": 2,
+  "builds": [
     {
-      "src": "/movies/search",
-      "dest": "/api/movies/search"
+      "src": "server.js",
+      "use": "@vercel/node"
     }
-  ],
-  "trailingSlash": false
+  ]
 }
