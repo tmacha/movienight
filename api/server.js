@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const axios = require("axios");
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const omdbApiKey = "c3e2d84b";
 const omdbApiUrl = "http://www.omdbapi.com";
 
@@ -104,4 +104,4 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-export default app;
+module.exports = app;
