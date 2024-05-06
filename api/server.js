@@ -5,7 +5,6 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const session = require("express-session");
 const crypto = require("crypto");
 const { searchMovies, getMovieById, getAllMovies } = require("./endpoints");
-const oauth = require("../oauth.json");
 const PORT = 3001;
 const path = require("path");
 
