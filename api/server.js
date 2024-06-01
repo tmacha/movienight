@@ -4,18 +4,34 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const session = require("express-session");
 const crypto = require("crypto");
-const { searchMovies, getMovieById, getAllMovies } = require("./endpoints");
+const movies = require("./routes/movies");
 const PORT = 3001;
-const path = require("path");
+const mongoose = require("mongoose");
+const mongoURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PW}@cluster0.oqmbhnq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
+//connect to MongoDB
+mongoose
+  .connect(mongoURI)
+  .then(() => {
+    console.log("MongoDB connected");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
+
+//generate random session secret
 function generateSessionSecret() {
   return crypto.randomBytes(64).toString("hex");
 }
 const sessionSecret = generateSessionSecret();
 
+//setup express server
 const app = express();
 
-app.use(express.json()); // Add this line to parse JSON requests
+//use movies.js to handle all /movies routes
+app.use("/movies", movies);
+
+app.use(express.json());
 app.use(cors());
 app.use(
   session({
@@ -27,7 +43,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(path.join(__dirname, "../build")));
+//!!use when deploying
+//app.use(express.static(path.join(__dirname, "../build")));
 
 passport.use(
   new GoogleStrategy(
@@ -63,14 +80,12 @@ app.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
   function (req, res) {
+    const user = req.user;
+    console.log("user", user);
     // Successful authentication, redirect home.
     res.redirect("/");
   }
 );
-
-app.get("/movies/search", searchMovies);
-app.get("/movies/:id", getMovieById);
-app.get("/movies", getAllMovies);
 
 if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {

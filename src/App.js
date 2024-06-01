@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 import "./App.css";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -26,8 +28,39 @@ function App() {
     }
   };
 
+  const errorMessage = (error) => {
+    console.log(error);
+  };
+
+  const handleGoogleLogin = async (credentialResponse) => {
+    try {
+      // Send the credential response to your backend for verification
+      const response = await fetch("/auth/google", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ credentialResponse }),
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+        console.log(userData);
+      } else {
+        setError("Failed to authenticate with Google");
+      }
+    } catch (error) {
+      console.error("Error authenticating with Google:", error);
+      setError("An error occurred during Google authentication");
+    }
+  };
+
   return (
     <div>
+      <div>
+        <GoogleLogin onSuccess={handleGoogleLogin} onError={errorMessage} />
+      </div>
       <form onSubmit={handleSearch} className="search-bar">
         <input
           type="search"
