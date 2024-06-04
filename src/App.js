@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 import "./App.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 
-function App() {
+const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState(null);
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -28,38 +33,10 @@ function App() {
     }
   };
 
-  const errorMessage = (error) => {
-    console.log(error);
-  };
-
-  const handleGoogleLogin = async (credentialResponse) => {
-    try {
-      // Send the credential response to your backend for verification
-      const response = await fetch("/auth/google", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ credentialResponse }),
-      });
-
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-        console.log(userData);
-      } else {
-        setError("Failed to authenticate with Google");
-      }
-    } catch (error) {
-      console.error("Error authenticating with Google:", error);
-      setError("An error occurred during Google authentication");
-    }
-  };
-
   return (
     <div>
       <div>
-        <GoogleLogin onSuccess={handleGoogleLogin} onError={errorMessage} />
+        <a href="http://localhost:3001/auth/google">Login with Google</a>
       </div>
       <form onSubmit={handleSearch} className="search-bar">
         <input
@@ -141,6 +118,68 @@ function App() {
       )}
     </div>
   );
-}
+};
+
+const Profile = () => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/profile", { withCredentials: true })
+      .then((response) => {
+        setUser(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching profile", error);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleLogout = () => {
+    axios
+      .get("http://localhost:3001/logout", { withCredentials: true })
+      .then(() => {
+        setUser(null);
+        window.location.href = "/";
+      })
+      .catch((error) => {
+        console.error("Error logging out", error);
+      });
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+
+  return (
+    <div>
+      <h1>Profile Page</h1>
+      {user && (
+        <>
+          <img src={user.picture} alt="Profile Picture" />
+          <p>Hello, {user.name.givenName}</p>
+        </>
+      )}
+      <button onClick={handleLogout}>Logout</button>
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" exact element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default App;

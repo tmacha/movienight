@@ -32,7 +32,14 @@ const app = express();
 app.use("/movies", movies);
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 app.use(
   session({
     secret: `${sessionSecret}`, // Replace with a secure, random string
@@ -72,20 +79,41 @@ passport.deserializeUser(function (obj, cb) {
 // Route to initiate Google OAuth flow
 app.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile"] })
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
 );
-
 // Route to handle Google OAuth callback
 app.get(
   "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  function (req, res) {
-    const user = req.user;
-    console.log("user", user);
-    // Successful authentication, redirect home.
-    res.redirect("/");
+  passport.authenticate("google", {
+    failureRedirect: "/",
+  }),
+  (req, res) => {
+    // Successful authentication, redirect to React app
+    res.redirect("http://localhost:3000/profile");
   }
 );
+
+// Route to get user profile
+app.get("/profile", (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
+  res.json(req.user);
+});
+
+// Route to log out
+app.get("/logout", (req, res) => {
+  req.logout(() => {
+    res.redirect("http://localhost:3000");
+  });
+});
+
+// Home route
+app.get("/", (req, res) => {
+  res.send("Home Page");
+});
 
 if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {
