@@ -26,7 +26,7 @@
   },
   "scripts": {
     "start": "concurrently \"yarn server\" \"yarn client\"",
-    "client": "react-scripts start & open http://localhost:3000 -a 'Google Chrome'",
+    "client": "react-scripts start & open http://localhost:3000 -a 'Firefox Developer Edition'",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
