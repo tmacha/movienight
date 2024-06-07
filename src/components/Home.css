@@ -1,0 +1,36 @@
+/* src/components/Home.css */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.search-input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 300px;
+}
+
+.search-button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.movie-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.movie-item {
+  position: relative;
+  margin: 1rem;
+  width: 200px;
+}
+
+.movie-poster {
+  width: 100%;
+  height: auto;
+}

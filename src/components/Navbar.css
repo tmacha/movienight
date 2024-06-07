@@ -1,0 +1,47 @@
+/* src/components/Navbar.css */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #333;
+  color: white;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 1rem;
+}
+
+nav button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* src/components/Navbar.css */
+
+/* src/components/Navbar.css */
+
+/* src/components/Navbar.css */
+
+.google-login-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.google-login-button img {
+  width: 191px; /* Adjust the width as needed */
+  height: 46px; /* Adjust the height as needed */
+}
+
+.google-login-button:hover {
+  background: none; /* Ensure no background change on hover */
+  border: none; /* Ensure no border change on hover */
+  padding: 0; /* Ensure no padding change on hover */
+  cursor: pointer; /* Ensure cursor remains pointer on hover */
+}
